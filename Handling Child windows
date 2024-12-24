@@ -1,0 +1,38 @@
+package childWindow;
+
+import java.util.Iterator;
+import java.util.Set;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class ChildWindow {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		WebDriver driver = new ChromeDriver();
+		driver.get("https://rahulshettyacademy.com/loginpagePractise/#");
+		driver.findElement(By.cssSelector(".blinkingText")).click();
+		String mailFinal=ChildWin(driver);
+		driver.findElement(By.id("username")).sendKeys(mailFinal);		
+	}
+	
+	
+	public static String ChildWin(WebDriver driver) {
+			Set<String> windows = driver.getWindowHandles();
+			Iterator<String> it = windows.iterator();
+			String parentWin= it.next();
+			String childWin = it.next();
+			//switching windows using switchTO() method
+			driver.switchTo().window(childWin);
+			String MailId= driver.findElement(By.cssSelector(".im-para.red")).getText().split("at ")[1].split(" ")[0];
+			System.out.println(MailId);
+			//only closes the current window not the whole driver
+//			driver.close();
+			//to shift from child and parent windows, should use the specific address of the parent window by using the getWindowhandles method 
+			driver.switchTo().window(parentWin);
+			return(MailId);
+			
+	}
+
+}
